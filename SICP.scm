@@ -23,6 +23,12 @@
 (define (averarg x y)
   (/ (+ x y) 2))
 
+
+(define (cube x)
+  * x x x)
+
+
+
 ;牛顿法平方根
 (define (mysqrt x)
   (define (good_enough? new_guess last_guess)
@@ -64,12 +70,12 @@
  				 (A x (- y 1))))))
 
 
-(define (f n)
-  (A 0 n))
-(define (g n)
-  (A 1 n))
-(define (h n)
-  (A 2 n))
+;(define (f n)
+;  (A 0 n))
+;(define (g n)
+;  (A 1 n))
+;(define (h n)
+;  (A 2 n))
 
 ;斐波拉契数列树型递归
 (define (fib n)
@@ -137,10 +143,8 @@
                    (pascal (- row 1) col)))))
   
 
-;1.14
+;1.15
 
-(define (cube x)
-  * x x x)
 
 (define (p x)
   (- (* 3 x) (* 4 (cube x))))
@@ -163,16 +167,7 @@
         (* x (iter x (+ count 1) all))))
   (iter x 1 n))
 
-;fast_pow
-;(define (even? n)
-;  (= (remainder n 2) 0))
-
-;(define (fast_pow x n)
-;  (cond ((= n 0) 1)
-;        ((even? n) (square(fast_pow x (/ n 2))))
-;        (else (* x (fast_pow x (- n 1))))))
-
-  
+ ;1.16
 (define (fast_pow x n)
   (define (even? n)
     (= (remainder n 2) 0))
@@ -190,8 +185,57 @@
 (iter x n 1))
 
 
+;1.17递归加法
+(define (fast_multiplicative a b)
+  (define (even? n)
+    (= (remainder n 2) 0))
+  (define (odd? n)
+    (not (even? n)))
+  (define (double x)
+    (+ x x))
+  (define (halve x)
+    (/ x 2))
+  
+  (define (iter a b)
+    (cond ((= b 0) a)
+          ((even? b) (iter (double a) (halve b)))
+          (else (+ a (iter a (- b 1))))))
+  (iter a b))
 
 
+;1.18迭代加法
+(define (faster_multiplicative a b)
+  (define (even? n)
+    (= (remainder n 2) 0))
+  (define (odd? n)
+    (not (even? n)))
+  (define (double x)
+    (+ x x))
+  (define (halve x)
+    (/ x 2))
+  
+  (define (iter a b temp)
+    (cond (( = b 0) temp)
+          ((even? b) (iter (double a) (halve b) temp))
+          ((odd? b) (iter a (- b 1) (+ a temp)))))
+  (iter a b 0))
+
+;1.19
+(define (fib n)
+  (define (iter a b p q count)
+    (cond ((= count 0) b)
+          ((even? count) 
+           (iter a
+                 b
+                 (+ (* p p)(* q q))
+                 (+ (* 2 p q) (* q q))
+                 (/ count 2)))
+          (else (iter (+ (* b q) (* a q) (* a p))
+                      (+ (* b p) (* a q))
+                      p
+                      q
+                      (- count 1)))))
+  (iter 1 0 0 1 n))
 
 
 
